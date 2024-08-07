@@ -1,0 +1,63 @@
+<h1>Products</h1>
+
+<%= form_with(url: products_path, method: :get, local: true, class: 'mb-3') do %>
+  <div class="row">
+    <div class="col-md-4">
+      <%= label_tag :search, 'Search' %>
+      <%= text_field_tag :search, params[:search], class: 'form-control', placeholder: 'Search products...' %>
+    </div>
+    <div class="col-md-4">
+      <%= label_tag :category, 'Category' %>
+      <%= select_tag :category, options_from_collection_for_select(Category.all, :id, :name, params[:category]), include_blank: 'All Categories', class: 'form-control' %>
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+      <%= submit_tag 'Search', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<%= form_with(url: products_path, method: :get, local: true, class: 'mb-3') do %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= label_tag :categories, 'Filter by Categories' %>
+      <% Category.all.each do |category| %>
+        <div class="form-check">
+          <%= check_box_tag 'categories[]', category.id, params[:categories]&.include?(category.id.to_s), class: 'form-check-input' %>
+          <%= label_tag "categories_#{category.id}", category.name, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-12 d-flex align-items-end">
+      <%= submit_tag 'Filter', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to product.name, product_path(product) %></h5>
+          <% if product.on_sale? %>
+            <p class="card-text"><strong>Sale Price:</strong> <%= number_to_currency(product.sale_price) %></p>
+            <p class="card-text"><del><%= number_to_currency(product.price) %></del></p>
+          <% else %>
+            <p class="card-text"><%= number_to_currency(product.price) %></p>
+          <% end %>
+          <p class="card-text"><strong>Category:</strong> <%= product.category.name %></p>
+          <%= form_with url: add_item_cart_path, method: :post, local: true do %>
+            <%= hidden_field_tag :product_id, product.id %>
+            <div class="form-group">
+              <%= label_tag :quantity %>
+              <%= number_field_tag :quantity, 1, class: 'form-control', min: 1 %>
+            </div>
+            <%= submit_tag 'Add to Cart', class: 'btn btn-primary mt-2' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @products %>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product: one
+  sale_price: 9.99
+  sale_start_date: 2024-08-06
+  sale_end_date: 2024-08-06
+
+two:
+  product: two
+  sale_price: 9.99
+  sale_start_date: 2024-08-06
+  sale_end_date: 2024-08-06

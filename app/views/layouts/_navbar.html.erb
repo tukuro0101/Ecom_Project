@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Anizkuro</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <%= form_with url: root_path, method: :get, local: true do %>
+            <%= submit_tag 'Home ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= form_with url: products_path, method: :get, local: true do %>
+            <%= submit_tag 'Products ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= form_with url: about_path, method: :get, local: true do %>
+            <%= submit_tag 'About ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= form_with url: contact_path, method: :get, local: true do %>
+            <%= submit_tag 'Contact ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+          <% end %>
+        </li>
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= form_with url: cart_path, method: :get, local: true do %>
+              <%= submit_tag 'Cart ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= form_with url: orders_path, method: :get, local: true do %>
+              <%= submit_tag 'Orders ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+            <% end %>
+          </li>
+          <% if current_user.admin? %>
+            <li class="nav-item">
+              <%= form_with url: rails_admin_path, method: :get, local: true do %>
+                <%= submit_tag 'Admin ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+              <% end %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= render 'layouts/logout_button' %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= form_with url: new_user_session_path, method: :get, local: true do %>
+              <%= submit_tag 'Login ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= form_with url: new_user_registration_path, method: :get, local: true do %>
+              <%= submit_tag 'Sign Up ', class: 'btn btn-link nav-link', style: 'padding: 0; border: none; background: none;' %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

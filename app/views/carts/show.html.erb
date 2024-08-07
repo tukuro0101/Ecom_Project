@@ -1,0 +1,37 @@
+<h1>Your Cart</h1>
+
+<% if @cart.cart_items.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart.cart_items.each do |item| %>
+        <tr>
+          <td><%= link_to item.product.name, product_path(item.product) %></td>
+          <td>
+            <%= form_with url: update_item_cart_path(item), method: :patch, local: true do %>
+              <%= number_field_tag :quantity, item.quantity, min: 0 %>
+              <%= hidden_field_tag :product_id, item.product_id %>
+              <%= submit_tag 'Update' %>
+            <% end %>
+          </td>
+          <td><%= number_to_currency(item.product.price) %></td>
+          <td><%= number_to_currency(item.total_price) %></td>
+          <td><%= link_to 'Remove', remove_item_cart_path(item), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h3>Total: <%= number_to_currency(@cart.total_price) %></h3>
+  <%= link_to 'Checkout', new_order_path, class: 'btn btn-primary' %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
